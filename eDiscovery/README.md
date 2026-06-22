@@ -48,8 +48,6 @@ User authentication via browser sign-in (interactive scenarios)
 ### Step 4: Add App to Purview eDiscovery Role Group (Required)
 
 > **This step is mandatory.** Microsoft Graph API permissions alone are not sufficient for app-only access to Purview eDiscovery. The service principal must also be a member of the **eDiscovery Managers** role group via Exchange Online. Without this, all API calls return `401 Unauthorized`.
->
-> Reference: [Practical365 – Using Purview eDiscovery APIs in App-Only Mode](https://practical365.com/ediscovery-app-only-mode/)
 
 Run the following as a **Global Administrator** or **Exchange Administrator**:
 
