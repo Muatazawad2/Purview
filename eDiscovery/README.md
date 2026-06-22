@@ -76,7 +76,13 @@ Get-RoleGroupMember -Identity "eDiscoveryManager"
 Get-eDiscoveryCaseAdmin
 ```
 
-> To find your **Service Principal Object ID**, go to Azure Portal → **Enterprise applications** → search for your app name → copy the **Object ID** shown on the Overview page. This is different from the Application (client) ID.
+> To find the value for `$ServicePrincipalId` (Enterprise Application Object ID):
+> 1. Go to Azure Portal → **Microsoft Entra ID** → **Enterprise applications**.
+> 2. Search for your app (example: **eDiscovery-SearchExport-Service**) and open it.
+> 3. On **Overview**, copy **Object ID**.
+>
+> Use this Enterprise Application **Object ID** in `New-ServicePrincipal`, `Add-RoleGroupMember`, and `Add-eDiscoveryCaseAdmin`.
+> Do **not** use the **Object ID** from **App registrations** for these three commands.
 
 ### Step 5: Collect Credentials
 
