@@ -59,17 +59,17 @@ Install-Module ExchangeOnlineManagement -Scope CurrentUser -Force
 Connect-IPPSSession
 
 # Replace with your app's ClientId (Application ID) and Entra ID Service Principal Object ID
-$AppId   = "<your-ClientId-GUID>"
-$SpObjId = "<your-ServicePrincipal-ObjectId-GUID>"
+$ClientId            = "<your-ClientId-GUID>"
+$ServicePrincipalId  = "<your-ServicePrincipal-ObjectId-GUID>"
 
 # Create the Exchange service principal that links to your Entra ID app
-New-ServicePrincipal -AppId $AppId -ObjectId $SpObjId -DisplayName "eDiscovery-SearchExport-Service"
+New-ServicePrincipal -AppId $ClientId -ObjectId $ServicePrincipalId -DisplayName "eDiscovery-SearchExport-Service"
 
 # Add the service principal to the eDiscovery Manager role group
-Add-RoleGroupMember -Identity "eDiscoveryManager" -Member $SpObjId
+Add-RoleGroupMember -Identity "eDiscoveryManager" -Member $ServicePrincipalId
 
 # Add the service principal as an eDiscovery Administrator
-Add-eDiscoveryCaseAdmin -User $SpObjId
+Add-eDiscoveryCaseAdmin -User $ServicePrincipalId
 
 # Verify membership
 Get-RoleGroupMember -Identity "eDiscoveryManager"
