@@ -45,14 +45,49 @@ User authentication via browser sign-in (interactive scenarios)
 
 4. Click **Grant admin consent** (requires Global Admin)
 
-### Step 4: Collect Credentials
+### Step 4: Add App to Purview eDiscovery Role Group (Required)
+
+> **This step is mandatory.** Microsoft Graph API permissions alone are not sufficient for app-only access to Purview eDiscovery. The service principal must also be a member of the **eDiscovery Managers** role group via Exchange Online. Without this, all API calls return `401 Unauthorized`.
+>
+> Reference: [Practical365 – Using Purview eDiscovery APIs in App-Only Mode](https://practical365.com/ediscovery-app-only-mode/)
+
+Run the following as a **Global Administrator** or **Exchange Administrator**:
+
+```powershell
+# Install the Exchange Online module if needed
+Install-Module ExchangeOnlineManagement -Scope CurrentUser -Force
+
+# Connect to the compliance/security endpoint
+Connect-IPPSSession
+
+# Replace with your app's ClientId (Application ID) and Entra ID Service Principal Object ID
+$AppId   = "<your-ClientId-GUID>"
+$SpObjId = "<your-ServicePrincipal-ObjectId-GUID>"
+
+# Create the Exchange service principal that links to your Entra ID app
+New-ServicePrincipal -AppId $AppId -ObjectId $SpObjId -DisplayName "eDiscovery-SearchExport-Service"
+
+# Add the service principal to the eDiscovery Manager role group
+Add-RoleGroupMember -Identity "eDiscoveryManager" -Member $SpObjId
+
+# Add the service principal as an eDiscovery Administrator
+Add-eDiscoveryCaseAdmin -User $SpObjId
+
+# Verify membership
+Get-RoleGroupMember -Identity "eDiscoveryManager"
+Get-eDiscoveryCaseAdmin
+```
+
+> To find your **Service Principal Object ID**, go to Azure Portal → **Enterprise applications** → search for your app name → copy the **Object ID** shown on the Overview page. This is different from the Application (client) ID.
+
+### Step 5: Collect Credentials
 
 From the app registration **Overview** page, copy:
 - **Tenant ID** (Directory ID)
 - **Client ID** (Application ID)
 - **Client Secret** (generated in Step 2)
 
-### Step 5: Create Configuration File (Optional)
+### Step 6: Create Configuration File (Optional)
 
 **⚠️ Security Warning**: Storing secrets in plain text files is not recommended for production.
 
@@ -61,9 +96,9 @@ For **development/testing only**, you can create `Invoke-eDiscoverySearchExport-
 - Restrict file permissions to authorized users
 - Use Azure Key Vault for production environments
 
-Alternatively, use **Step 2 (command-line parameters)** or **Step 3 (interactive prompts)** above to avoid storing secrets.
+Alternatively, use command-line parameters or interactive prompts to avoid storing secrets on disk.
 
-### Step 6: Install Microsoft Graph Module
+### Step 7: Install Microsoft Graph Module
 
 ```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser -Force
