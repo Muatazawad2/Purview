@@ -2,7 +2,7 @@
 
 Professional PowerShell tools for managing Microsoft Purview eDiscovery searches and exports. Two authentication modes available: App-only (service principal) and Delegated (user sign-in).
 
-**Developer**: Dr Muataz Awad
+**Developer**:  Muataz Awad
 
 ---
 
