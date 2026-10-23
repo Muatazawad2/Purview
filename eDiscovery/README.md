@@ -304,3 +304,9 @@ Replace values:
 For issues or suggestions, review the script documentation at the top of each `.ps1` file.
 
 **Last Updated**: June 20, 2026
+
+---
+
+## Disclaimer
+
+This is a personal project I maintain in an individual capacity. It is **not an official Microsoft product** and is not endorsed, reviewed, or supported by Microsoft. All opinions, code, and content here are my own and do not represent the views of my employer. Provided **"as-is"**, with no warranty — use at your own risk.
